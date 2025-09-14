@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import { withIds } from '../store/data';
 import TabPanelWrapper from './TabPanelWrapper';
 import MyAccountPanel from './MyAccountPanel';
+import UnderProcessFallback from './UnderProcessFallback';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -18,6 +19,7 @@ function TabPanel(props: TabPanelProps) {
 
     return (
         <div
+            style={{ flex: 1 }}
             role="tabpanel"
             hidden={value !== index}
             id={`vertical-tabpanel-${index}`}
@@ -49,7 +51,7 @@ export default function LeftNavigation() {
 
     return (
         <Box
-            sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: "100vh" }}
+            sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: "100vh", width: "100vw" }}
         >
             <Tabs
                 orientation="vertical"
@@ -65,9 +67,6 @@ export default function LeftNavigation() {
                     },
 
                 }}
-
-
-
             >
                 {withIds?.map((tab, index) => <Tab key={tab?.id} label={tab?.tabLabel} {...a11yProps(index)} icon={<img src={tab?.icon} alt={`${tab?.tabLabel} icon`} />} iconPosition='start' sx={{
                     margin: "0.6rem",
@@ -92,10 +91,9 @@ export default function LeftNavigation() {
 
             </Tabs>
             {withIds?.map((tab, index) => {
-
                 return <TabPanel key={tab?.id} value={value} index={index}>
                     <TabPanelWrapper title={tab?.tabLabel} >
-                        {tab?.tabLabel === "My Account" ? <MyAccountPanel data={tab?.tabPanelData} /> : <>Under Process</>}
+                        {tab?.tabLabel === "My Account" ? <MyAccountPanel data={tab?.tabPanelData} /> : <UnderProcessFallback />}
                     </TabPanelWrapper>
                 </TabPanel>
             }

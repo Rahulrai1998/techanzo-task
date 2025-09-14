@@ -1,15 +1,16 @@
+import styled from '@emotion/styled'
 import LeftNavigation from './components/LeftNavigation'
 
 function App() {
-
-
-
   return (
-    <div>
+    <RootWrapper>
       <LeftNavigation />
-
-    </div>
+    </RootWrapper>
   )
 }
 
 export default App
+
+const RootWrapper = styled("div")({
+  width: "100vw"
+})
