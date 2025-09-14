@@ -51,7 +51,7 @@ export default function LeftNavigation() {
 
     return (
         <Box
-            sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: "100vh", width: "100vw" }}
+            sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: "100vh", width: "100vw"}}
         >
             <Tabs
                 orientation="vertical"

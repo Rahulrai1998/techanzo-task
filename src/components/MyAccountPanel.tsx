@@ -3,8 +3,12 @@ import { styled } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import type { MyAccountData, TabPanelDataType } from '../store/data'
+import type { MyAccountProfileData, TabPanelDataType } from '../store/data'
 import type { FC } from 'react';
+import { Typography } from '@mui/material';
+import TabPanelWrapper from './TabPanelWrapper';
+import UnderProcessFallback from './UnderProcessFallback';
+import ProfilePanel from './ProfilePanel';
 
 interface MyAccountPanelProps {
     data: TabPanelDataType | undefined | null
@@ -13,6 +17,33 @@ interface StyledTabsProps {
     children?: React.ReactNode;
     value: number;
     onChange: (event: React.SyntheticEvent, newValue: number) => void;
+}
+
+interface TabPanelProps {
+    children?: React.ReactNode;
+    index: number;
+    value: number;
+}
+
+function TabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            style={{ flex: 1 }}
+            role="tabpanel"
+            hidden={value !== index}
+            id={`vertical-tabpanel-${index}`}
+            aria-labelledby={`vertical-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box >
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
 }
 
 const StyledTabs = styled((props: StyledTabsProps) => (
@@ -77,21 +108,29 @@ const MyAccountPanel: FC<MyAccountPanelProps> = ({ data }) => {
     };
 
     return (
+        <Box>
+            <Box sx={{ bgcolor: 'rgba(238, 239, 255, 1)', borderRadius: "100px", padding: "5px 9px", width: "fit-content" }}>
+                <StyledTabs
+                    value={value}
+                    onChange={handleChange}
+                    aria-label="styled tabs"
+                >
+                    {data?.map((tab, index) => {
+                        return <StyledTab
+                            key={tab?.id}
+                            label={tab?.acountTabLable}
+                            iconSrc={tab?.icon}
+                        />
+                    })}
+                </StyledTabs>
 
-        <Box sx={{ bgcolor: 'rgba(238, 239, 255, 1)', borderRadius: "100px", padding: "0.5rem", width: "fit-content" }}>
-            <StyledTabs
-                value={value}
-                onChange={handleChange}
-                aria-label="styled tabs"
-            >
-                {data?.map((tab, index) => {
-                    return <StyledTab
-                        key={tab?.id}
-                        label={tab?.acountTabLable}
-                        iconSrc={tab?.icon}
-                    />
-                })}
-            </StyledTabs>
+            </Box>
+            {data?.map((tab, index) => {
+                return <TabPanel key={tab?.id} value={value} index={index}>
+                    {tab?.acountTabLable === "Profile" ? <ProfilePanel initialData={tab?.panelData as MyAccountProfileData} /> : <UnderProcessFallback />}
+                </TabPanel>
+            }
+            )}
         </Box>
 
     );
