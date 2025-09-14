@@ -7,6 +7,7 @@ import { withIds } from '../store/data';
 import TabPanelWrapper from './TabPanelWrapper';
 import MyAccountPanel from './MyAccountPanel';
 import UnderProcessFallback from './UnderProcessFallback';
+import LeftPanelProfileCard from './LeftPanelProfileCard';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -48,10 +49,11 @@ export default function LeftNavigation() {
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
-
     return (
+
+
         <Box
-            sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: "100vh", width: "100vw"}}
+            sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: "100vh", width: "100vw", position: "relative" }}
         >
             <Tabs
                 orientation="vertical"
@@ -68,26 +70,36 @@ export default function LeftNavigation() {
 
                 }}
             >
-                {withIds?.map((tab, index) => <Tab key={tab?.id} label={tab?.tabLabel} {...a11yProps(index)} icon={<img src={tab?.icon} alt={`${tab?.tabLabel} icon`} />} iconPosition='start' sx={{
-                    margin: "0.6rem",
-                    minHeight: "0px",
-                    padding: "9px 5rem 9px 12px",
-                    borderRadius: "12px",
-                    '&.MuiTab-root': {
-                        justifyContent: "flex-start !important",
-                        textTransform: 'none',
-                    },
-                    '&.Mui-focusVisible': {
-                        display: "none"
-                    },
-                    '&.Mui-selected': {
-                        background: 'linear-gradient(104.11deg, #151C67 -0.52%, #2A38CD 111.07%)',
-                        color: '#fff',
-                        '& img': {
-                            filter: 'invert(100%) !important'
-                        }
-                    }
-                }} />)}
+                {withIds?.map((tab, index) =>
+                    <Tab
+                        key={tab?.id} label={tab?.tabLabel}
+                        {...a11yProps(index)}
+                        icon={<img src={tab?.icon} alt={`${tab?.tabLabel} icon`} />}
+                        iconPosition='start'
+                        sx={{
+                            fontWeight: 400,
+                            fontSize: "16px",
+                            margin: "0.6rem",
+                            minHeight: "0px",
+                            padding: "9px 4rem 9px 12px",
+                            borderRadius: "12px",
+                            color: "rgba(0, 0, 0, 1)",
+                            '&.MuiTab-root': {
+                                justifyContent: "flex-start !important",
+                                textTransform: 'none',
+                            },
+                            '&.Mui-focusVisible': {
+                                display: "none"
+                            },
+                            '&.Mui-selected': {
+                                background: 'linear-gradient(104.11deg, #151C67 -0.52%, #2A38CD 111.07%)',
+                                color: '#fff',
+                                '& img': {
+                                    filter: 'invert(100%) !important'
+                                }
+                            }
+                        }} />
+                )}
 
             </Tabs>
             {withIds?.map((tab, index) => {
@@ -98,8 +110,10 @@ export default function LeftNavigation() {
                 </TabPanel>
             }
             )}
-
+            <LeftPanelProfileCard />
         </Box>
+
+
     );
 }
 
