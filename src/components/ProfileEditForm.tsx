@@ -197,9 +197,10 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
             </div>
             <Form>
                 <InputContainer>
-                    <label>
+                    <label htmlFor="name">
                         <Label>NAME</Label>
                         <Input
+                            id="name"
                             name="name"
                             type="text"
                             value={formData?.name}
@@ -209,9 +210,10 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
                 </InputContainer>
 
                 <InputContainer>
-                    <label>
+                    <label htmlFor="title">
                         <Label>PROFESSIONAL TITLE</Label>
                         <Input
+                            id="title"
                             name="title"
                             type="text"
                             value={formData?.title}
@@ -221,11 +223,13 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
                 </InputContainer>
 
                 <InputContainer>
-                    <label>
+                    <label htmlFor="email">
                         <Label>EMAIL ADDRESS</Label>
                         <Input
+                            id="email"
                             name="email"
                             type="email"
+                            pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
                             value={formData?.email}
                             onChange={handleChange}
                         />
@@ -233,9 +237,10 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
                 </InputContainer>
 
                 <InputContainer>
-                    <label>
+                    <label htmlFor="phone">
                         <Label>PHONE NUMBER</Label>
                         <Input
+                            id="phone"
                             name="phone"
                             type="tel"
                             value={formData?.phone}
