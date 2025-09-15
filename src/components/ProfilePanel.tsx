@@ -75,7 +75,7 @@ const ProfilePanel: FC<ProfilePanelProps> = () => {
             <CoverPage cover={cover ?? ""} />
             <ProfileDescription>
                 <div className='avatar-box'>
-                    <Avatar alt={fullName} src={avatar as any} sx={{ width: 132, height: 132 }} className='avatar' />
+                    <Avatar alt={fullName} src={avatar as any} sx={{ width: 132, height: 132, border: "2.13px solid #fff"}} className='avatar' />
                 </div>
                 <NameBadgeExp>
                     <Typography variant='h5' fontSize={"20px"}>{fullName}</Typography>

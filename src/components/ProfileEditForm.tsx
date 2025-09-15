@@ -4,7 +4,7 @@ import React, {
     type FC,
     type SetStateAction,
 } from "react";
-import { Stack, Button, Typography, Chip } from "@mui/material";
+import { Stack, Button, Typography, Chip, Tooltip, IconButton } from "@mui/material";
 import type { LanguageType, MyAccountProfileData } from "../store/data";
 import styled from "@emotion/styled";
 import plus from "../assets/plus.png";
@@ -263,17 +263,18 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
                             </LangChips>
                             <StyledInput
                                 id="language-input"
-                                disabled={false}
-                                readOnly={false}
                                 name="languages"
                                 type="text"
                                 placeholder="Add a language"
                                 value={language}
                                 onChange={(e) => setLanguage(e.target.value)}
                             />
-                            <AddButton type="button" onClick={handleAddLanguage}>
-                                <img src={plus} alt="" />
-                            </AddButton>
+                            {language && <Tooltip title={"Add"} placement="top-start">
+                                <AddButton type="button" onClick={handleAddLanguage}>
+                                    <img src={plus} alt="Add Language Button" />
+                                </AddButton>
+                            </Tooltip>}
+
                         </LanguageInput>
                     </label>
                 </InputWrapper>
@@ -355,13 +356,15 @@ const InputWrapper = styled("div")({
 
 const StyledInput = styled("input")({
     width: "fit-content",
-    // padding: "16px 48px 16px 16px", // extra right padding for button
+    padding: "2px",
     border: "none",
-    // fontSize: "14px",
+    fontSize: "12px",
     marginLeft: "10px",
+
+
 });
 
-const AddButton = styled("button")({
+const AddButton = styled(IconButton)({
     color: "white",
     border: "none",
     background: "none",
@@ -371,7 +374,10 @@ const AddButton = styled("button")({
     img: {
         objectFit: "cover",
         textAlign: "center",
+        width: "20px",
+        height: "20px",
     },
+
 });
 
 const LangChips = styled("div")({
@@ -383,14 +389,16 @@ const LangChips = styled("div")({
 
 const LanguageInput = styled("div")({
     display: "flex",
-    width: "100%",
-    padding: "10px",
+    width: "105%",
+    padding: "16px",
     border: "2px solid rgba(21, 28, 103, 0.2)",
     borderRadius: "16px",
     fontSize: "14px",
     alignItems: "center",
+    marginTop: "16px",
     "input:focus": {
         outline: "none",
         boxShadow: "none",
     },
+    height: "18px"
 });
