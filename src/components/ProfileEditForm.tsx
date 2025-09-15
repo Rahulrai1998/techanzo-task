@@ -119,7 +119,6 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
             console.log("form data", formData)
             handleDataUpdate(formData);
             setOpen(false);
-            toast.success("Profile Updated!!");
         } catch (error) {
             console.error("Error submitting form:", error);
             toast.error("Something went wrong while updating the profile.");

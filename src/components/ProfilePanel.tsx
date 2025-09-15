@@ -3,6 +3,7 @@ import type { MyAccountProfileData } from '../store/data'
 import styled from '@emotion/styled'
 import { Avatar, Button, Chip, Stack, Typography } from '@mui/material'
 import ProfileEditForm, { type FormData } from './ProfileEditForm'
+import toast from 'react-hot-toast'
 
 interface ProfilePanelProps {
     initialData: MyAccountProfileData | undefined | null
@@ -31,18 +32,26 @@ const ProfilePanel: FC<ProfilePanelProps> = ({ initialData }) => {
         image,
         languages,
     }: FormData) => {
-        console.log("Avatar", image)
-
-        const newObj = {
-            ...profileData,
-            fullName: name,
-            professionalTitle: title,
-            email, whatsapp: phone,
-            avatar: (typeof image === "string" && image === avatar) || !image ? image : URL.createObjectURL(image as any),
-            languages: languages
+        try {
+            const newObj = {
+                ...profileData,
+                fullName: name,
+                professionalTitle: title,
+                email,
+                whatsapp: phone,
+                avatar:
+                    typeof image === "string" && image === avatar || !image
+                        ? image
+                        : URL.createObjectURL(image as any),
+                languages,
+            };
+            setProfileData(newObj as any);
+            toast.success("Profile Updated!!");
+        } catch (error) {
+            console.error("Error updating profile data:", error);
+            toast?.error("Profile update failed!!")
         }
-        setProfileData(newObj as any)
-    }
+    };
 
     return (
         <Parent>
