@@ -24,7 +24,10 @@ export default LeftPanelProfileCard
 
 const Parent = styled("div")({
     position: "absolute",
-    bottom: 10,
+    bottom: 8,
     left: 12,
     width: "225px",
+    zIndex: 1,
+    padding:"2px 1px",
+    background: "#fff"
 })
