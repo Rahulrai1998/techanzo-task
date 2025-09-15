@@ -279,6 +279,9 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
                 </InputWrapper>
             </Form>
             <Stack flexDirection={"row"} justifyContent={"flex-end"} gap={2}>
+                <Button sx={{
+                    borderRadius: "16px", fontSize: "13px", padding: "9px 20px", border: "1px solid rgba(21, 28, 103, 0.2)", color: "rgba(21, 28, 103, 0.4)"
+                }} variant='outlined' onClick={() => { setOpen(false) }}>Back</Button>
                 <Button
                     type="submit"
                     onClick={(e: any) => handleSubmit(e)}
