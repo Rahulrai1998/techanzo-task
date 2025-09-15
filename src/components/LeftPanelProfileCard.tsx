@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import { Avatar, Typography } from '@mui/material'
-import React from 'react'
 import dp from "../assets/initial-dp.png";
 import downArray from "../assets/direction-down.png"
 

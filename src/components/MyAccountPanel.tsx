@@ -1,17 +1,15 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import type { MyAccountProfileData, TabPanelDataType } from '../store/data'
+import { styled } from '@mui/material/styles';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
 import type { FC } from 'react';
-import { Stack, Typography } from '@mui/material';
-import TabPanelWrapper from './TabPanelWrapper';
-import UnderProcessFallback from './UnderProcessFallback';
-import ProfilePanel from './ProfilePanel';
+import * as React from 'react';
 import left from "../assets/leftArrow.png";
 import right from "../assets/rightArrow.png";
-import Button from '@mui/material/Button';
+import type { MyAccountProfileData, TabPanelDataType } from '../store/data';
+import ProfilePanel from './ProfilePanel';
+import UnderProcessFallback from './UnderProcessFallback';
 interface MyAccountPanelProps {
     data: TabPanelDataType | undefined | null
 }

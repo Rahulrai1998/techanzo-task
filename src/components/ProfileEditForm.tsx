@@ -10,7 +10,6 @@ import styled from "@emotion/styled";
 import plus from "../assets/plus.png";
 import upload from "../assets/upload.png";
 import { v4 as uuidv4 } from "uuid";
-import { Camera } from "@mui/icons-material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import toast from "react-hot-toast";
 
@@ -179,7 +178,7 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
                     <div>
                         <button
                             onClick={() => {
-                                setPreviewUrl(prev => null)
+                                setPreviewUrl(null)
                                 setFormData((prev) => ({ ...prev, image: null }));
                             }}
                             style={{

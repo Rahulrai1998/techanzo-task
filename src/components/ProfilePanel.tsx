@@ -1,4 +1,4 @@
-import React, { useState, type FC } from 'react'
+import  { useState, type FC } from 'react'
 import type { MyAccountProfileData } from '../store/data'
 import styled from '@emotion/styled'
 import { Avatar, Button, Chip, Stack, Typography } from '@mui/material'

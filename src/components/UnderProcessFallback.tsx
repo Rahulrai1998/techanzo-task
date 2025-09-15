@@ -1,4 +1,3 @@
-import React from 'react'
 import UnderConstructionSVG from "../assets/construction-svgrepo-com.svg"
 import styled from '@emotion/styled'
 

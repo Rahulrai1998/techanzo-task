@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { type FC, type ReactNode } from 'react'
-import UnderProcessFallback from './UnderProcessFallback'
+
 
 interface TabPanelWrapperProps {
     title: string

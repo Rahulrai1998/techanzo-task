@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { Typography } from '@mui/material'
-import React, { type FC } from 'react'
+import { type FC } from 'react'
 
 interface ProfileDescrpFieldProps {
     title: string,
