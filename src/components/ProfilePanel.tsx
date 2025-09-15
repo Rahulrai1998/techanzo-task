@@ -9,7 +9,7 @@ interface ProfilePanelProps {
     initialData: MyAccountProfileData | undefined | null
 }
 
-const ProfilePanel: FC<ProfilePanelProps> = ({ initialData }) => {
+const ProfilePanel: FC<ProfilePanelProps> = () => {
 
     // const [profileData, setProfileData] = useState<MyAccountProfileData>(initialData)
     // const [openForm, setOpenForm] = useState(false)
