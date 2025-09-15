@@ -56,7 +56,7 @@ const ProfilePanel: FC<ProfilePanelProps> = () => {
 
     const { profileData, handleDataUpdate, openForm, setOpenForm } = useProfileContext();
 
-    console.log(profileData)
+
 
 
     const { avatar,

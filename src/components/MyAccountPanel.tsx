@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import type { FC } from 'react';
+import { useMemo, type FC } from 'react';
 import * as React from 'react';
 import left from "../assets/leftArrow.png";
 import right from "../assets/rightArrow.png";
@@ -102,7 +102,8 @@ const StyledTab = styled((props: StyledTabProps) => (
 }));
 const MyAccountPanel: FC<MyAccountPanelProps> = ({ data }) => {
     const [value, setValue] = React.useState(0);
-    const dataLength = data?.length ?? 0
+    const dataLength = useMemo(() => data?.length ?? 0, [data])
+
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         console.log(event?.target)
         setValue(newValue);

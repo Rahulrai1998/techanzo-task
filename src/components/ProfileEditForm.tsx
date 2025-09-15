@@ -1,4 +1,5 @@
 import React, {
+    useCallback,
     useState,
     type Dispatch,
     type FC,
@@ -50,7 +51,7 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
         image: previewUrl,
     });
 
-    const handleAddLanguage = () => {
+    const handleAddLanguage = useCallback(() => {
         try {
             const trimmed = language.trim();
             if (!trimmed) return;
@@ -69,9 +70,9 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
         } catch (error) {
             toast.error("Error adding language.");
         }
-    };
+    }, [language, setFormData, setLanguage, setLanguagesArray])
 
-    const handleLangChipRemove = (id: string) => {
+    const handleLangChipRemove = useCallback((id: string) => {
         try {
             if (!id || !languagesArray?.length) return;
 
@@ -84,9 +85,9 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
         } catch (error) {
             toast.error("Error removing language");
         }
-    };
+    }, [languagesArray, setLanguagesArray, setFormData])
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         try {
             const { name, value } = e.target;
             console.log(value);
@@ -94,8 +95,9 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
         } catch (error) {
             toast.error("Error updating form data");
         }
-    };
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    }, [setFormData])
+
+    const handleImageChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         try {
             const file = e.target.files?.[0];
             if (!file) return;
@@ -110,9 +112,9 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
         } catch (error) {
             toast.error("Error handling image upload:");
         }
-    };
+    }, [setFormData, setPreviewUrl])
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             console.log("form data", formData)
@@ -122,7 +124,7 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
             console.error("Error submitting form:", error);
             toast.error("Something went wrong while updating the profile.");
         }
-    };
+    }, [handleDataUpdate, setOpen, formData])
 
     return (
         <Parent>
