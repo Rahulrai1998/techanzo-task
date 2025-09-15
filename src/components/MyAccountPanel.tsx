@@ -5,11 +5,13 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import type { MyAccountProfileData, TabPanelDataType } from '../store/data'
 import type { FC } from 'react';
-import { Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import TabPanelWrapper from './TabPanelWrapper';
 import UnderProcessFallback from './UnderProcessFallback';
 import ProfilePanel from './ProfilePanel';
-
+import left from "../assets/leftArrow.png";
+import right from "../assets/rightArrow.png";
+import Button from '@mui/material/Button';
 interface MyAccountPanelProps {
     data: TabPanelDataType | undefined | null
 }
@@ -102,10 +104,20 @@ const StyledTab = styled((props: StyledTabProps) => (
 }));
 const MyAccountPanel: FC<MyAccountPanelProps> = ({ data }) => {
     const [value, setValue] = React.useState(0);
-
+    const dataLength = data?.length ?? 0
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+
+    const handleLeft = () => {
+        if (value > 0)
+            setValue(val => val - 1)
+
+    }
+    const handleRight = () => {
+        if (value < dataLength - 1)
+            setValue(val => val + 1)
+    }
 
     return (
         <Box>
@@ -131,9 +143,33 @@ const MyAccountPanel: FC<MyAccountPanelProps> = ({ data }) => {
                 </TabPanel>
             }
             )}
+
+            <TabNavBtns>
+                <button onClick={handleLeft} hidden={value === 0}><img src={left} alt="Left arrow" /></button>
+                <button onClick={handleRight} hidden={value === dataLength - 1}><img src={right} alt="Right Arrow" /></button>
+            </TabNavBtns>
         </Box>
 
     );
 }
 
 export default MyAccountPanel
+
+const TabNavBtns = styled("div")({
+    display: "flex",
+    justifyContent: "flex-start",
+    "button": {
+        background: "transparent",
+        border: "none",
+        gap: "2px",
+        width: "fit-content",
+        cursor: "pointer"
+    }
+})
+
+// const ButtnGroup = styled("div")({
+//     display: 'flex',
+//     justifyContent: "flex-end",
+//     gap
+// })
+

@@ -1,14 +1,17 @@
 import React, { useState, type FC } from 'react'
 import type { MyAccountProfileData } from '../store/data'
 import styled from '@emotion/styled'
-import { Avatar, Chip, Typography } from '@mui/material'
+import { Avatar, Button, Chip, Stack, Typography } from '@mui/material'
+import ProfileEditForm, { type FormData } from './ProfileEditForm'
 
 interface ProfilePanelProps {
     initialData: MyAccountProfileData | undefined | null
 }
 
 const ProfilePanel: FC<ProfilePanelProps> = ({ initialData }) => {
-    const [profileData, setProfileData] = useState(initialData)
+    const [profileData, setProfileData] = useState<MyAccountProfileData>(initialData)
+    const [openForm, setOpenForm] = useState(false)
+
     const { avatar,
         cover,
         badgeIcon,
@@ -19,6 +22,21 @@ const ProfilePanel: FC<ProfilePanelProps> = ({ initialData }) => {
         email,
         whatsapp,
         languages } = profileData ?? {}
+
+    const handleDataUpdate = ({
+        name,
+        title,
+        email,
+        phone,
+        image,
+        languages,
+    }: FormData) => {
+
+        const newObj = { ...profileData, fullName: name, professionalTitle: title, email, whatsapp: phone, avatar: image && URL.createObjectURL(image as any), languages: languages }
+
+        console.log(languages)
+        setProfileData(newObj as any)
+    }
 
     return (
         <Parent>
@@ -39,7 +57,8 @@ const ProfilePanel: FC<ProfilePanelProps> = ({ initialData }) => {
                     </BadgeBox>
                 </NameBadgeExp>
             </ProfileDescription>
-            <ProfileDetails>
+
+            {!openForm && <ProfileDetails>
                 <DetailsFieldContainer>
                     <Typography className='title'>FULL NAME</Typography>
                     <Typography className='value'>{fullName}</Typography>
@@ -61,6 +80,16 @@ const ProfilePanel: FC<ProfilePanelProps> = ({ initialData }) => {
                     <Typography><LanguageChips>{languages?.map((lang) => <Chip key={lang?.id} label={lang?.name} />)}</LanguageChips></Typography>
                 </DetailsFieldContainer>
             </ProfileDetails>
+            }
+            {openForm && <ProfileEditForm data={profileData} handleDataUpdate={handleDataUpdate} setOpen={setOpenForm} />}
+
+            {!openForm && <Stack flexDirection={"row"} justifyContent={"flex-end"} gap={2}>
+                <Button sx={{
+                    borderRadius: "16px", fontSize: "13px", padding: "9px 20px", border: "1px solid rgba(21, 28, 103, 0.2)", color: "rgba(21, 28, 103, 0.4)"
+                }} variant='outlined' onClick={() => setOpenForm(true)}>Edit</Button>
+
+            </Stack>}
+
         </Parent>
     )
 }
@@ -69,7 +98,8 @@ export default ProfilePanel
 
 
 const Parent = styled("div")({
-    // overflowY: "auto",
+    position: "relative",
+    overflow: "auto",
     "& .MuiBox-root": {
         padding: "0px !important"
     },
@@ -140,7 +170,6 @@ const DetailsFieldContainer = styled("div")({
         fontSize: "16px",
         lineHeight: "150%",
         letterSpacing: "-2%"
-
     }
 })
 

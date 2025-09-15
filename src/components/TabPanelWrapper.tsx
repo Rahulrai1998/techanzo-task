@@ -18,6 +18,7 @@ export default TabPanelWrapper;
 const WrapperContainer = styled("div")({
     width: "70%",
     marginLeft: "8rem",
+    overflow: "hidden",
     h1: {
         fontWeight: 400,
         fontSize: "30px",
