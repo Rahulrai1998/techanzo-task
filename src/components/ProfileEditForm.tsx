@@ -1,17 +1,23 @@
-import React, { useState, type Dispatch, type FC, type SetStateAction } from 'react'
-import { Stack, Button, Typography, Chip } from '@mui/material'
-import type { LanguageType, MyAccountProfileData } from '../store/data'
-import styled from '@emotion/styled'
+import React, {
+    useState,
+    type Dispatch,
+    type FC,
+    type SetStateAction,
+} from "react";
+import { Stack, Button, Typography, Chip } from "@mui/material";
+import type { LanguageType, MyAccountProfileData } from "../store/data";
+import styled from "@emotion/styled";
 import plus from "../assets/plus.png";
 import upload from "../assets/upload.png";
 import { v4 as uuidv4 } from "uuid";
-import { Camera } from '@mui/icons-material';
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import { Camera } from "@mui/icons-material";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import toast from "react-hot-toast";
 
 interface ProfileEditFormProps {
-    data: MyAccountProfileData | undefined
-    handleDataUpdate: (data: FormData) => void
-    setOpen: Dispatch<SetStateAction<boolean>>
+    data: MyAccountProfileData | undefined;
+    handleDataUpdate: (data: FormData) => void;
+    setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export type FormData = {
@@ -20,14 +26,20 @@ export type FormData = {
     email: string;
     phone: string;
     languages: LanguageType[];
-    image: File | null;
+    image: File | null | undefined | string;
 };
 
-
-const ProfileEditForm: FC<ProfileEditFormProps> = ({ data, setOpen, handleDataUpdate }) => {
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-    const { fullName, professionalTitle, email, whatsapp, avatar, languages } = data ?? {}
-    const [language, setLanguage] = useState('');
+const ProfileEditForm: FC<ProfileEditFormProps> = ({
+    data,
+    setOpen,
+    handleDataUpdate,
+}) => {
+    const { fullName, professionalTitle, email, whatsapp, avatar, languages } =
+        data ?? {};
+    const [previewUrl, setPreviewUrl] = useState<string | null | File>(
+        avatar || null
+    );
+    const [language, setLanguage] = useState("");
     const [languagesArray, setLanguagesArray] = useState<LanguageType[]>([]);
 
     const [formData, setFormData] = useState<FormData>({
@@ -36,75 +48,119 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({ data, setOpen, handleDataUp
         email: email as string,
         phone: whatsapp as any,
         languages: languages as LanguageType[],
-        image: null,
+        image: avatar,
     });
 
     const handleAddLanguage = () => {
-        const trimmed = language.trim();
-        if (!trimmed) return;
-        const updatedLanguages = [...languagesArray, { id: uuidv4(), name: trimmed }];
-        setLanguagesArray(updatedLanguages);
-        setLanguage('');
-        setFormData(prev => ({ ...prev, languages: updatedLanguages }));
+        try {
+            const trimmed = language.trim();
+            if (!trimmed) return;
+
+            const updatedLanguages = [
+                ...languagesArray,
+                { id: uuidv4(), name: trimmed },
+            ];
+
+            setLanguagesArray(updatedLanguages);
+            setLanguage("");
+            setFormData((prev) => ({
+                ...prev,
+                languages: updatedLanguages,
+            }));
+        } catch (error) {
+            toast.error("Error adding language.");
+        }
     };
 
     const handleLangChipRemove = (id: string) => {
-        if (!id || !languagesArray?.length) return;
-        const updatedLanguages = languagesArray.filter(lang => lang?.id !== id);
-        setLanguagesArray(updatedLanguages);
-        setFormData(prev => ({ ...prev, languages: updatedLanguages }));
-    };
+        try {
+            if (!id || !languagesArray?.length) return;
 
+            const updatedLanguages = languagesArray.filter((lang) => lang?.id !== id);
+            setLanguagesArray(updatedLanguages);
+            setFormData((prev) => ({
+                ...prev,
+                languages: updatedLanguages,
+            }));
+        } catch (error) {
+            toast.error("Error removing language");
+        }
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        console.log(value)
-        setFormData(prev => ({ ...prev, [name]: value }));
+        try {
+            const { name, value } = e.target;
+            console.log(value);
+            setFormData((prev) => ({ ...prev, [name]: value }));
+        } catch (error) {
+            toast.error("Error updating form data");
+        }
     };
-
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setFormData(prev => ({ ...prev, image: file }));
+        try {
+            const file = e.target.files?.[0];
+            if (!file) return;
+
+            setFormData((prev) => ({ ...prev, image: file }));
+
             const reader = new FileReader();
-            reader.onloadend = () => setPreviewUrl(reader.result as string);
+            reader.onloadend = () => {
+                setPreviewUrl(reader.result as string);
+            };
             reader.readAsDataURL(file);
+        } catch (error) {
+            toast.error("Error handling image upload:");
         }
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        handleDataUpdate(formData)
-        setOpen(false)
-        console.log('Form submitted:', formData);
+        try {
+            handleDataUpdate(formData);
+            setOpen(false);
+            toast.success("Profile Updated!!");
+        } catch (error) {
+            console.error("Error submitting form:", error);
+            toast.error("Something went wrong while updating the profile.");
+        }
     };
-
-
 
     return (
         <Parent>
-            <div style={{ marginTop: "20px", display: "flex", justifyContent: 'flex-start', gap: 8, alignItems: "center" }}>
+            <div
+                style={{
+                    marginTop: "20px",
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    gap: 8,
+                    alignItems: "center",
+                }}
+            >
                 <div
                     style={{
-                        width: '100px',
-                        height: '100px',
-                        borderRadius: '50%',
-                        background: '#dfdfdf',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        overflow: 'hidden',
+                        width: "100px",
+                        height: "100px",
+                        borderRadius: "50%",
+                        background: "#dfdfdf",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        overflow: "hidden",
                     }}
                 >
-                    {previewUrl ? <img
-                        src={previewUrl as string}
-                        alt="Profile Preview"
-                        style={{
-                            width: previewUrl ? '100%' : '40px',
-                            height: previewUrl ? '100%' : '40px',
-                            objectFit: previewUrl ? 'cover' : 'contain',
-                        }}
-                    /> : <CameraAltIcon />}
+                    {previewUrl ? (
+                        <img
+                            src={previewUrl as string}
+                            alt="Profile Preview"
+                            style={{
+                                width: previewUrl ? "100%" : "40px",
+                                height: previewUrl ? "100%" : "40px",
+                                objectFit: previewUrl ? "cover" : "contain",
+                            }}
+                        />
+                    ) : (
+                        <CameraAltIcon />
+                    )}
                 </div>
 
                 <label htmlFor="img-upload" className="custom-upload-btn">
@@ -116,74 +172,126 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({ data, setOpen, handleDataUp
                     type="file"
                     accept="image/*"
                     onChange={handleImageChange}
-                    style={{ display: 'none' }}
+                    style={{ display: "none" }}
                 />
 
-                <div>
-                    <button onClick={() => setPreviewUrl(null)} style={{ borderRadius: "16px", padding: "12px 26px", border: "2px solid rgba(21, 28, 103, 0.2)", background: "white", cursor: "pointer" }}>Delete</button></div>
+                {previewUrl && (
+                    <div>
+                        <button
+                            onClick={() => setPreviewUrl(null)}
+                            style={{
+                                borderRadius: "16px",
+                                padding: "12px 26px",
+                                border: "2px solid rgba(21, 28, 103, 0.2)",
+                                background: "white",
+                                cursor: "pointer",
+                            }}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                )}
             </div>
             <Form>
                 <InputContainer>
                     <label>
                         <Label>NAME</Label>
-                        <Input name="name"
-                            type="text" value={formData?.name} onChange={handleChange} />
+                        <Input
+                            name="name"
+                            type="text"
+                            value={formData?.name}
+                            onChange={handleChange}
+                        />
                     </label>
                 </InputContainer>
 
                 <InputContainer>
                     <label>
                         <Label>PROFESSIONAL TITLE</Label>
-                        <Input name='title' type="text" value={formData?.title} onChange={handleChange} />
+                        <Input
+                            name="title"
+                            type="text"
+                            value={formData?.title}
+                            onChange={handleChange}
+                        />
                     </label>
-                </InputContainer >
+                </InputContainer>
 
                 <InputContainer>
                     <label>
                         <Label>EMAIL ADDRESS</Label>
-                        <Input name='email' type="email" value={formData?.email} onChange={handleChange} />
+                        <Input
+                            name="email"
+                            type="email"
+                            value={formData?.email}
+                            onChange={handleChange}
+                        />
                     </label>
-                </InputContainer >
+                </InputContainer>
 
                 <InputContainer>
                     <label>
                         <Label>PHONE NUMBER</Label>
-                        <Input name='phone' type="tel" value={formData?.phone} onChange={handleChange} />
+                        <Input
+                            name="phone"
+                            type="tel"
+                            value={formData?.phone}
+                            onChange={handleChange}
+                        />
                     </label>
-                </InputContainer >
+                </InputContainer>
 
                 <InputWrapper>
                     <label htmlFor="language-input">
-                        <Label className="input-label">
-                            LANGUAGES SPOKEN
-                        </Label>
+                        <Label className="input-label">LANGUAGES SPOKEN</Label>
                         <LanguageInput>
-                            <LangChips>{languagesArray?.map((lang) => <Chip key={lang?.id} label={lang?.name}
-                                onDelete={() => handleLangChipRemove(lang?.id as string)} />)}</LangChips>
+                            <LangChips>
+                                {languagesArray?.map((lang) => (
+                                    <Chip
+                                        key={lang?.id}
+                                        label={lang?.name}
+                                        onDelete={() => handleLangChipRemove(lang?.id as string)}
+                                    />
+                                ))}
+                            </LangChips>
                             <StyledInput
-                                id='language-input'
+                                id="language-input"
                                 disabled={false}
                                 readOnly={false}
-                                name='languages'
+                                name="languages"
                                 type="text"
                                 placeholder="Add a language"
                                 value={language}
                                 onChange={(e) => setLanguage(e.target.value)}
                             />
-                            <AddButton type="button" onClick={handleAddLanguage}><img src={plus} alt="" /></AddButton>
+                            <AddButton type="button" onClick={handleAddLanguage}>
+                                <img src={plus} alt="" />
+                            </AddButton>
                         </LanguageInput>
                     </label>
                 </InputWrapper>
-
-            </Form >
+            </Form>
             <Stack flexDirection={"row"} justifyContent={"flex-end"} gap={2}>
-                <Button type='submit' onClick={(e: any) => handleSubmit(e)} sx={{ borderRadius: "16px", padding: "9px 20px", fontSize: "13px", background: "linear-gradient(104.11deg, #151C67 -0.52%, #2A38CD 111.07%)" }} variant="contained">Save</Button>
+                <Button
+                    type="submit"
+                    onClick={(e: any) => handleSubmit(e)}
+                    sx={{
+                        borderRadius: "16px",
+                        padding: "9px 20px",
+                        fontSize: "13px",
+                        background:
+                            "linear-gradient(104.11deg, #151C67 -0.52%, #2A38CD 111.07%)",
+                    }}
+                    variant="contained"
+                >
+                    Save
+                </Button>
             </Stack>
         </Parent>
-    )
-}
+    );
+};
 
-export default ProfileEditForm
+export default ProfileEditForm;
 
 const Parent = styled("div")({
     "& .custom-upload-btn": {
@@ -195,24 +303,20 @@ const Parent = styled("div")({
         fontWeight: "bold",
         display: "inline-flex",
         alignItems: "center",
-        gap: "8px"
-    }
-    ,
+        gap: "8px",
+    },
     "& .upload-icon": {
         paddingRight: "4px",
-    }
-
-
-})
+    },
+});
 
 const Label = styled(Typography)({
-    marginTop: "10px"
-
-})
+    marginTop: "10px",
+});
 
 const InputContainer = styled("div")({
-    width: "90%"
-})
+    width: "90%",
+});
 
 const Form = styled("form")({
     width: "100%",
@@ -222,17 +326,17 @@ const Form = styled("form")({
     gridTemplateColumns: "repeat(2, minmax(100px, 1fr))",
     //if there is only one element at last row, it will take full width
     "& > :nth-last-child(1):nth-child(odd)": {
-        gridColumn: "1 / -1"
-    }
-})
+        gridColumn: "1 / -1",
+    },
+});
 
 const Input = styled("input")({
     padding: "16px",
     border: "2px solid rgba(21, 28, 103, 0.2)",
     borderRadius: "16px",
     width: "100%",
-    margin: "17px 0"
-})
+    margin: "17px 0",
+});
 
 const InputWrapper = styled("div")({
     position: "relative",
@@ -244,7 +348,7 @@ const StyledInput = styled("input")({
     // padding: "16px 48px 16px 16px", // extra right padding for button
     border: "none",
     // fontSize: "14px",
-    marginLeft: "10px"
+    marginLeft: "10px",
 });
 
 const AddButton = styled("button")({
@@ -253,31 +357,30 @@ const AddButton = styled("button")({
     background: "none",
     cursor: "pointer",
     marginLeft: "10px",
-    textAlign: 'center',
-    "img": {
-        objectFit: 'cover',
-        textAlign: 'center'
-    }
+    textAlign: "center",
+    img: {
+        objectFit: "cover",
+        textAlign: "center",
+    },
 });
 
 const LangChips = styled("div")({
     display: "flex",
     background: "white",
     color: "white",
-    gap: 2
-})
+    gap: 2,
+});
 
 const LanguageInput = styled("div")({
-    display: 'flex',
+    display: "flex",
     width: "100%",
     padding: "10px",
     border: "2px solid rgba(21, 28, 103, 0.2)",
     borderRadius: "16px",
     fontSize: "14px",
-    alignItems: 'center',
+    alignItems: "center",
     "input:focus": {
         outline: "none",
-        boxShadow: "none"
-    }
-
-})
+        boxShadow: "none",
+    },
+});

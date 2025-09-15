@@ -31,8 +31,16 @@ const ProfilePanel: FC<ProfilePanelProps> = ({ initialData }) => {
         image,
         languages,
     }: FormData) => {
+        console.log("Avatar", image)
 
-        const newObj = { ...profileData, fullName: name, professionalTitle: title, email, whatsapp: phone, avatar: image && URL.createObjectURL(image as any), languages: languages }
+        const newObj = {
+            ...profileData,
+            fullName: name,
+            professionalTitle: title,
+            email, whatsapp: phone,
+            avatar: typeof image === "string" && image === avatar ? image : URL.createObjectURL(image as any),
+            languages: languages
+        }
 
         console.log(languages)
         setProfileData(newObj as any)
@@ -43,7 +51,7 @@ const ProfilePanel: FC<ProfilePanelProps> = ({ initialData }) => {
             <CoverPage cover={cover ?? ""} />
             <ProfileDescription>
                 <div className='avatar-box'>
-                    <Avatar alt={fullName} src={avatar} sx={{ width: 132, height: 132 }} className='avatar' />
+                    <Avatar alt={fullName} src={avatar as any} sx={{ width: 132, height: 132 }} className='avatar' />
                 </div>
                 <NameBadgeExp>
                     <Typography variant='h5' fontSize={"20px"}>{fullName}</Typography>

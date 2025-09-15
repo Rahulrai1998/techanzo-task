@@ -24,7 +24,7 @@ export type LanguageType =
 
 export type MyAccountProfileData =
   | {
-      avatar: string;
+      avatar: File | string | undefined | null;
       cover: string;
       username: string;
       badgeIcon: string;
