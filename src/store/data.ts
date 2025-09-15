@@ -72,7 +72,7 @@ const data = [
           badgeName: "Gold",
           exp: "8+ years",
           fullName: "Rajesh Kumar",
-          professionalTitle: "Not specified",
+          professionalTitle: "Agent",
           email: "rajesh@findleagents.com",
           address: "3891 Ranchview Dr.Richardson,California 62639",
           whatsapp: 7896541230,

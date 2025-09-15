@@ -1,13 +1,16 @@
 import styled from '@emotion/styled'
 import LeftNavigation from './components/LeftNavigation'
 import { Toaster } from 'react-hot-toast'
+import ContextProvider from './store/ContextProvider'
 
 function App() {
   return (
-    <RootWrapper>
-      <Toaster />
-      <LeftNavigation />
-    </RootWrapper>
+    <ContextProvider>
+      <RootWrapper>
+        <Toaster />
+        <LeftNavigation />
+      </RootWrapper>
+    </ContextProvider>
   )
 }
 

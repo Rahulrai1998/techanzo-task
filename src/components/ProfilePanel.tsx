@@ -1,17 +1,63 @@
-import  { useState, type FC } from 'react'
+import { type FC } from 'react'
 import type { MyAccountProfileData } from '../store/data'
 import styled from '@emotion/styled'
 import { Avatar, Button, Chip, Stack, Typography } from '@mui/material'
-import ProfileEditForm, { type FormData } from './ProfileEditForm'
-import toast from 'react-hot-toast'
+import ProfileEditForm from './ProfileEditForm'
+import { useProfileContext } from '../store/ContextProvider'
 
 interface ProfilePanelProps {
     initialData: MyAccountProfileData | undefined | null
 }
 
 const ProfilePanel: FC<ProfilePanelProps> = ({ initialData }) => {
-    const [profileData, setProfileData] = useState<MyAccountProfileData>(initialData)
-    const [openForm, setOpenForm] = useState(false)
+
+    // const [profileData, setProfileData] = useState<MyAccountProfileData>(initialData)
+    // const [openForm, setOpenForm] = useState(false)
+
+    // const { avatar,
+    //     cover,
+    //     badgeIcon,
+    //     badgeName,
+    //     exp,
+    //     fullName,
+    //     professionalTitle,
+    //     email,
+    //     whatsapp,
+    //     languages } = profileData ?? {}
+
+    // const handleDataUpdate = ({
+    //     name,
+    //     title,
+    //     email,
+    //     phone,
+    //     image,
+    //     languages,
+    // }: FormData) => {
+    //     try {
+    //         const newObj = {
+    //             ...profileData,
+    //             fullName: name,
+    //             professionalTitle: title,
+    //             email,
+    //             whatsapp: phone,
+    //             avatar:
+    //                 typeof image === "string" && image === avatar || !image
+    //                     ? image
+    //                     : URL.createObjectURL(image as any),
+    //             languages,
+    //         };
+    //         setProfileData(newObj as any);
+    //         toast.success("Profile Updated!!");
+    //     } catch (error) {
+    //         console.error("Error updating profile data:", error);
+    //         toast?.error("Profile update failed!!")
+    //     }
+    // };
+
+    const { profileData, handleDataUpdate, openForm, setOpenForm } = useProfileContext();
+
+    console.log(profileData)
+
 
     const { avatar,
         cover,
@@ -23,35 +69,6 @@ const ProfilePanel: FC<ProfilePanelProps> = ({ initialData }) => {
         email,
         whatsapp,
         languages } = profileData ?? {}
-
-    const handleDataUpdate = ({
-        name,
-        title,
-        email,
-        phone,
-        image,
-        languages,
-    }: FormData) => {
-        try {
-            const newObj = {
-                ...profileData,
-                fullName: name,
-                professionalTitle: title,
-                email,
-                whatsapp: phone,
-                avatar:
-                    typeof image === "string" && image === avatar || !image
-                        ? image
-                        : URL.createObjectURL(image as any),
-                languages,
-            };
-            setProfileData(newObj as any);
-            toast.success("Profile Updated!!");
-        } catch (error) {
-            console.error("Error updating profile data:", error);
-            toast?.error("Profile update failed!!")
-        }
-    };
 
     return (
         <Parent>
