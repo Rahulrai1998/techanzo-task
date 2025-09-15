@@ -38,11 +38,9 @@ const ProfilePanel: FC<ProfilePanelProps> = ({ initialData }) => {
             fullName: name,
             professionalTitle: title,
             email, whatsapp: phone,
-            avatar: typeof image === "string" && image === avatar ? image : URL.createObjectURL(image as any),
+            avatar: (typeof image === "string" && image === avatar) || !image ? image : URL.createObjectURL(image as any),
             languages: languages
         }
-
-        console.log(languages)
         setProfileData(newObj as any)
     }
 

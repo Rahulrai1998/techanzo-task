@@ -48,7 +48,7 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
         email: email as string,
         phone: whatsapp as any,
         languages: languages as LanguageType[],
-        image: avatar,
+        image: previewUrl,
     });
 
     const handleAddLanguage = () => {
@@ -116,6 +116,7 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
+            console.log("form data", formData)
             handleDataUpdate(formData);
             setOpen(false);
             toast.success("Profile Updated!!");
@@ -178,7 +179,10 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
                 {previewUrl && (
                     <div>
                         <button
-                            onClick={() => setPreviewUrl(null)}
+                            onClick={() => {
+                                setPreviewUrl(prev => null)
+                                setFormData((prev) => ({ ...prev, image: null }));
+                            }}
                             style={{
                                 borderRadius: "16px",
                                 padding: "12px 26px",
@@ -287,7 +291,7 @@ const ProfileEditForm: FC<ProfileEditFormProps> = ({
                     Save
                 </Button>
             </Stack>
-        </Parent>
+        </Parent >
     );
 };
 
