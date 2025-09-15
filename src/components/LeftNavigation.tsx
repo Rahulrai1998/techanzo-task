@@ -71,7 +71,7 @@ export default function LeftNavigation() {
 
                 }}
             >
-                {withIds?.map((tab, index) =>
+                {withIds?.filter(tab => tab?.tabLabel !== "My Account")?.map((tab, index) =>
                     <Tab
                         key={tab?.id} label={tab?.tabLabel}
                         {...a11yProps(index)}
@@ -101,16 +101,56 @@ export default function LeftNavigation() {
                             }
                         }} />
                 )}
+                <Typography
+                    sx={{ fontWeight: 400, fontStyle: "regular", fontSize: "16px", lineHeight: "150%", letterSpacing: "-2%", margin: "0.6rem 0.6rem 0.2rem 0.6rem", }}>SETTINGS
+                </Typography>
+                <Tab
+                    key={withIds[6]?.id} label={withIds[6]?.tabLabel}
+                    {...a11yProps(6)}
+                    icon={<img src={withIds[6]?.icon} alt={`${withIds[6]?.tabLabel} icon`} />}
+                    iconPosition='start'
+                    sx={{
+                        fontWeight: 400,
+                        fontSize: "16px",
+                        margin: "0.6rem",
+                        minHeight: "0px",
+                        padding: "9px 4rem 9px 12px",
+                        borderRadius: "12px",
+                        color: "rgba(0, 0, 0, 1)",
+                        '&.MuiTab-root': {
+                            justifyContent: "flex-start !important",
+                            textTransform: 'none',
+                        },
+                        '&.Mui-focusVisible': {
+                            display: "none"
+                        },
+                        '&.Mui-selected': {
+                            background: 'linear-gradient(104.11deg, #151C67 -0.52%, #2A38CD 111.07%)',
+                            color: '#fff',
+                            '& img': {
+                                filter: 'invert(100%) !important'
+                            }
+                        }
+                    }} />
 
             </Tabs>
-            {withIds?.map((tab, index) => {
+
+            {withIds?.filter(tab => tab?.tabLabel !== "My Account").map((tab, index) => {
                 return <TabPanel key={tab?.id} value={value} index={index}>
                     <TabPanelWrapper title={tab?.tabLabel} >
-                        {tab?.tabLabel === "My Account" ? <MyAccountPanel data={tab?.tabPanelData} /> : <UnderProcessFallback />}
+                        <UnderProcessFallback />
                     </TabPanelWrapper>
                 </TabPanel>
             }
             )}
+
+
+            <TabPanel key={withIds[6]?.id} value={value - 1} index={6}>
+                <TabPanelWrapper title={withIds[6]?.tabLabel} >
+                    <MyAccountPanel data={withIds[6]?.tabPanelData} />
+                </TabPanelWrapper>
+            </TabPanel>
+
             <LeftPanelProfileCard />
         </Box>
 
