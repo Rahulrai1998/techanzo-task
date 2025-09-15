@@ -104,6 +104,7 @@ const MyAccountPanel: FC<MyAccountPanelProps> = ({ data }) => {
     const [value, setValue] = React.useState(0);
     const dataLength = data?.length ?? 0
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        console.log(event?.target)
         setValue(newValue);
     };
 
@@ -125,7 +126,7 @@ const MyAccountPanel: FC<MyAccountPanelProps> = ({ data }) => {
                     onChange={handleChange}
                     aria-label="styled tabs"
                 >
-                    {data?.map((tab, index) => {
+                    {data?.map((tab) => {
                         return <StyledTab
                             key={tab?.id}
                             label={tab?.acountTabLable}
